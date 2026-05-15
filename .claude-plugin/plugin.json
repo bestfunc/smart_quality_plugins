@@ -1,0 +1,5 @@
+{
+  "name": "smart-tpm",
+  "version": "1.0.0",
+  "description": "Smart TPM 检测平台 MCP 插件（数据集 / 检测流程 / 测试任务 / 算法 只读+受控写）"
+}

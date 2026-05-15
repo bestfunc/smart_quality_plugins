@@ -1,0 +1,7 @@
+{
+  "name": "smart_quality_plugins",
+  "owner": { "name": "bestfunc" },
+  "plugins": [
+    { "name": "smart-tpm", "source": "." }
+  ]
+}
