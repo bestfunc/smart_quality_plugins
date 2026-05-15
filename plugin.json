@@ -5,7 +5,7 @@
   "mcpServers": {
     "smart-tpm": {
       "type": "http",
-      "url": "https://<smart-tpm-domain>/api/v2/mcp"
+      "url": "http://localhost:8000/api/v2/mcp"
     }
   }
 }
