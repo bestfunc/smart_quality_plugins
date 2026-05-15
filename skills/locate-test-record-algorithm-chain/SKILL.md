@@ -1,7 +1,7 @@
 ---
 name: locate-test-record-algorithm-chain
 description: 用户给一个 test_record id 或编号,想追溯它走了哪条 detect_flow、哪个算法流、用了哪个算法 + 阈值时使用。
-allowed-tools: test_records_get, detect_flow_executions_get, detect_flows_get, algorithm_flows_get, algorithms_get
+allowed-tools: test_records_get, detect_flows_get, detect_flows_list_nodes, algorithm_flows_get, algorithms_get
 ---
 
 # 定位测试记录算法链路
@@ -9,21 +9,22 @@ allowed-tools: test_records_get, detect_flow_executions_get, detect_flows_get, a
 ## 链路结构
 
 ```
-test_record (testRecordId)
- → detect_flow_execution (从 record.executionId)
- → detect_flow (execution.detectFlowId 的某个版本)
- → detect_flow_node[] (流程里的每个节点)
-   → algorithm_flow (algorithm 节点绑的算法流)
-     → algorithm (算法流里的具体算法)
+test_record (testRecordId,含 detectFlowId + detectFlowVersionId)
+ → detect_flow (按 record 里锁定的版本)
+   → detect_flow_node[] (流程节点定义)
+     → algorithm_flow (algorithm 节点绑的算法流)
+       → algorithm (算法流里的具体算法)
 ```
+
+> 注: detect_flow_executions tool(每节点实际输出+tags)首期未提供。要看一次执行的逐节点实际输出,转 Web UI: `/test-tasks/<taskId>/records/<recordId>`。
 
 ## 流程
 
-1. **拿 record**：`test_records_get(record_id)` → 得到 `executionId`, `taskId`
-2. **拿执行实例**：`detect_flow_executions_get(execution_id)` → 得到 `detectFlowId`, `detectFlowVersionId`, 每个节点的输出 + tags
-3. **拿流程定义**：`detect_flows_get(flow_id, version_id)` → 得到节点列表 + currentNodeAttr
-4. **逐节点追算法**：对每个 algorithm 类型节点，取 `currentNodeAttr.algorithmFlowVersionId`，调 `algorithm_flows_get(flow_id, version_id)`
-5. **拿具体算法 + 参数**：算法流里每个算法节点 → `algorithms_get(algorithm_id)`，重点报告参数（阈值 / 模型路径）
+1. **拿 record**: `test_records_get(record_id)` → 得到 `taskId`, `detectFlowId`, `detectFlowVersionId`(record 里锁定的执行时流程版本)
+2. **拿流程定义**: `detect_flows_get(flow_id, version_id)` → 得到节点列表 + 每个节点的 `currentNodeAttr`
+   - 如需扁平节点列表跨版本对比,补一刀 `detect_flows_list_nodes(flow_id)`
+3. **逐节点追算法**: 对每个 algorithm 类型节点,取 `currentNodeAttr.algorithmFlowVersionId`,调 `algorithm_flows_get(flow_id, version_id)`
+4. **拿具体算法 + 参数**: 算法流里每个算法节点 → `algorithms_get(algorithm_id)`,重点报告参数(阈值 / 模型路径)
 
 ## 输出格式
 

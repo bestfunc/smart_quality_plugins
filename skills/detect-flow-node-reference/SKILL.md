@@ -51,6 +51,9 @@ description: 用户问检测流程节点的字段含义（合并节点的 show_m
 
 ````
 detect_flows_get(flow_id="...")             # 完整流程 + 全部节点
-detect_flow_nodes_list(flow_id="...")       # 只看节点列表
-detect_flow_executions_get(execution_id=...)  # 看一次执行的实际节点输出 + tags
+detect_flows_list_nodes(flow_id="...")      # 列指定流程下的所有版本(含节点 flowData)
+
+# 注: detect_flow_executions tool 首期未提供
+# 想看一次执行的实际节点输出 + tags,转 Web UI:
+#   /test-tasks/<taskId>/records/<recordId>
 ````
