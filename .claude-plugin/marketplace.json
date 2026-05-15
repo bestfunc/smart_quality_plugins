@@ -1,13 +1,20 @@
 {
   "name": "smart_quality_plugins",
   "owner": { "name": "bestfunc" },
+  "metadata": {
+    "description": "Smart TPM 检测平台的 Claude Code plugin 市场。提供本地开发 / 内网测试 两种部署的变体，按实际环境装对应那一个即可。生产版待发。",
+    "version": "1.0.1"
+  },
   "plugins": [
     {
-      "name": "smart-tpm",
-      "source": {
-        "source": "github",
-        "repo": "bestfunc/smart_quality_plugins"
-      }
+      "name": "smart-tpm-local",
+      "source": "./plugins/smart-tpm-local",
+      "description": "【本地开发版】localhost:8000 — 本机 docker 起的 smart-tpm-api 容器。8 个 AI skill + OAuth 自动授权 MCP connector。"
+    },
+    {
+      "name": "smart-tpm-test",
+      "source": "./plugins/smart-tpm-test",
+      "description": "【内网测试版】http://192.168.2.121:8080 — 部门内测环境。8 个 AI skill + OAuth 自动授权 MCP connector。"
     }
   ]
 }

@@ -1,8 +1,0 @@
-{
-  "mcpServers": {
-    "smart-tpm": {
-      "type": "http",
-      "url": "${SMART_TPM_MCP_URL:-http://localhost:8000/api/v2/mcp}"
-    }
-  }
-}

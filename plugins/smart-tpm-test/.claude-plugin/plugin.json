@@ -1,0 +1,16 @@
+{
+  "name": "smart-tpm-test",
+  "description": "Smart TPM 检测平台 MCP 插件 - 内网测试版（http://192.168.2.121:8080，部门测试环境）。8 个 skill 覆盖数据集/检测流程/测试任务/算法的查询与受控写。",
+  "version": "1.0.1",
+  "author": { "name": "bestfunc" },
+  "homepage": "https://github.com/bestfunc/smart_quality_plugins",
+  "repository": "https://github.com/bestfunc/smart_quality_plugins",
+  "license": "Apache-2.0",
+  "keywords": ["smart-tpm", "mcp", "quality", "test"],
+  "mcpServers": {
+    "smart-tpm": {
+      "type": "http",
+      "url": "http://192.168.2.121:8080/api/v2/mcp"
+    }
+  }
+}
