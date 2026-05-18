@@ -1,0 +1,17 @@
+{
+  "name": "smart-tpm-prod",
+  "description": "Smart TPM 检测平台 MCP 插件 - 生产版（https://smartquality.bestfunc.com）。8 个 skill 覆盖数据集/检测流程/测试任务/算法的查询与受控写。",
+  "version": "1.0.2",
+  "author": { "name": "bestfunc" },
+  "homepage": "https://github.com/bestfunc/smart_quality_plugins",
+  "repository": "https://github.com/bestfunc/smart_quality_plugins",
+  "license": "Apache-2.0",
+  "keywords": ["smart-tpm", "mcp", "quality", "prod"],
+  "mcpServers": {
+    "smart-tpm": {
+      "type": "http",
+      "url": "https://smartquality.bestfunc.com/api/v2/mcp",
+      "httpUrl": "https://smartquality.bestfunc.com/api/v2/mcp"
+    }
+  }
+}
