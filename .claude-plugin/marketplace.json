@@ -3,7 +3,7 @@
   "owner": { "name": "bestfunc" },
   "metadata": {
     "description": "Smart TPM 检测平台的 Claude Code plugin 市场。提供本地开发 / 内网测试 / 生产 三种部署的变体，按实际环境装对应那一个即可。",
-    "version": "1.0.2"
+    "version": "1.0.3"
   },
   "plugins": [
     {
@@ -19,7 +19,7 @@
     {
       "name": "smart-tpm-prod",
       "source": "./plugins/smart-tpm-prod",
-      "description": "【生产版】https://smartquality.bestfunc.com — 对外生产环境。8 个 AI skill + OAuth 自动授权 MCP connector。"
+      "description": "【生产版】http://192.168.2.175:8080 — 部门生产环境(内网 IP 直连,避开自签证书问题)。8 个 AI skill + OAuth 自动授权 MCP connector。"
     }
   ]
 }
