@@ -23,7 +23,7 @@ allowed-tools: test_records_get, test_tasks_get, detect_flows_get, detect_flows_
    - coarseFilters / fineFilters
    - 创建时间 + 创建人
 3. **看流程定义**: `detect_flows_get(flow_id, version_id)` —— 用 record 里锁定的 `detectFlowVersionId`,不是当前版本;如需扁平节点列表补一刀 `detect_flows_list_nodes(flow_id)`
-4. **看样本标注**: `datasets_get_annotations(sample_id)` —— 比对**实际标注**与 record 判定结果的差异
+4. **看样本标注**: `datasets_get_annotations(workstation_id, channel_id)` —— 比对**实际标注**与 record 判定结果的差异(workstation_id 必填,channel_id 从 test_record 里的 `sampleId` 或 `channelId` 拿)
 5. **看算法**: 对节点中 model 类的算法,`algorithms_get(algorithm_id)` 看参数 + 阈值
 
 > 注: detect_flow_executions tool(每节点实际输出+tags)首期未提供。要看一次执行的逐节点 raw 输出,引导工程师打开 Web UI: `/test-tasks/<taskId>/records/<recordId>`。

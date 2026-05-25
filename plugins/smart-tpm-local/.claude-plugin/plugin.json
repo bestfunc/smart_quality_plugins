@@ -1,7 +1,7 @@
 {
   "name": "smart-tpm-local",
   "description": "Smart TPM 检测平台 MCP 插件 - 本地开发版（localhost:8000，对应本机 docker 起的 smart-tpm-api 容器）。10 个 skill 覆盖数据集/检测流程/测试任务/算法/生产检测记录 5 个模块的查询与受控写。",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "author": { "name": "bestfunc" },
   "homepage": "https://github.com/bestfunc/smart_quality_plugins",
   "repository": "https://github.com/bestfunc/smart_quality_plugins",

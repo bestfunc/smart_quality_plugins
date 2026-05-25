@@ -22,17 +22,24 @@ Smart TPM MCP 插件把工厂检测平台的能力暴露给 AI，让工程师在
 [AI 调 detect_flows_list ...]
 
 > 抽一下数据集 "缺陷-NG-2026Q1" 里 label=NG 的样本前 20 条
-[AI 调 datasets_query_samples ...]
+[AI 先确认 workstation_id,再 datasets_list → datasets_get → datasets_query_samples ...]
 
 > 仿造测试任务 #1024 模板新建一份(改 sampleRatio 为 0.3)
 [AI 调 test_tasks_get + test_tasks_create_from_template ...]
 ````
 
+## ⚠️ workstation_id 必填(datasets_* / detect_records_*)
+
+工位分库架构。所有 `datasets_*` 工具(6 个)和 `detect_records_*` 工具(2 个)调用前都**必须**传 `workstation_id`。
+- IDE 上下文里如果有当前工位(`X-Workstation-Id`),直接复用
+- 没有就问用户"哪个工位?",别瞎传也别用主库账户的默认值兜底
+- 漏传 → server schema validation 报错;传错工位 → 接口返空(易被误判为"没数据")
+
 ## 隔离与权限
 
-- 你只能看到自己**组织 + 工位**下的数据（service 层强制隔离）
-- 写操作必须在 OAuth 授权页**显式勾选**（`mcp:*:write` scope）
-- 所有调用都会落 `mcp_audit_log` 表，超管可在 Web → 系统设置 → MCP 审计 看到
+- 你只能看到自己**组织 + 工位**下的数据(物理分库 + service 层 WHERE 双重隔离)
+- 写操作必须在 OAuth 授权页**显式勾选**(`mcp:*:write` scope)
+- 所有调用都会落 `mcp_audit_log` 表(含 workstation_id 字段),超管可在 Web → 系统设置 → MCP 审计 看到
 
 ## 想做更具体的事？
 

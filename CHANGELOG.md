@@ -1,5 +1,12 @@
 # CHANGELOG
 
+## v1.0.6
+
+- 修 `datasets_*` 6 个工具的 skill 文档:全部加 `workstation_id` 必填说明(原 backend bug 已修,server 强制 workstation_id,skill 文档对齐)
+  - `sample-dataset-extraction`:rewrite 调用流程,明确 `version_id ≠ dataset_id` 老坑,标 page_size 上限 500
+  - `reproduce-customer-error`:`datasets_get_annotations` 调用补 `workstation_id` + `channel_id`
+  - `quickstart-smart-tpm-mcp`:加 ⚠️ 段警告 datasets_* / detect_records_* 必传 workstation_id
+
 ## v1.0.5
 
 - 新增第 10 个 skill `about-smart-tpm-mcp` —— 插件 / MCP 集成层的自助百科（user-invocable，按角色分流到 reference / scenarios / faq / glossary）
