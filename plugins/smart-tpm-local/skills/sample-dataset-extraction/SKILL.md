@@ -23,6 +23,7 @@ datasets_* 全部 6 个工具(list/get/query_samples/get_annotations/create_draf
    - `filters` 是 JSON 字符串(如 `'[{"field":"productUniqueCode","operator":"contains","value":"NG"}]'`),不传则全量
    - `page_size` 默认 50,最大 500
 4. **看标注详情**(可选):对挑出的样本,对每个 `channel_id` 调 `datasets_get_annotations(workstation_id, channel_id)`
+5. **下载原始文件**(可选):样本 channel 里有 `fileID`(音频 .pcm / 图片)、细标 mark 里也有 `fileID`,调 `files_presign_download(workstation_id, file_id)` 拿 15 分钟内有效的下载 URL,客户端直接 curl/wget,不走后端带宽
 
 ## 输出格式
 

@@ -1,5 +1,12 @@
 # CHANGELOG
 
+## v1.0.7
+
+- 配套 web_v2 v1.5.93 fix:`files_presign_download` 新增 B 模式 `(workstation_id, file_id)`,后端查工位 file 表把 fileID 解析成 (bucket, path) 再签 URL,返回 url + name + size + mimetype 元数据;A 模式 `(bucket, object_key)` 直传保留
+- `query-detect-records`:5 步 `files_presign_download(file_id=...)` 调用改为 `(workstation_id, file_id)`,明示 workstation_id 必填 + 后端解析 fileID
+- `sample-dataset-extraction`:加 step 5 下载原始文件(.pcm 音频 / 标注图片),复用 `files_presign_download` B 模式
+- 同步配套 backend fix:MinIO presign 的 region 改读 settings.MINIO_REGION(原硬编码 us-east-1),175 部署 .env 加 MINIO_REGION=ap-east-1 对齐 MinIO 服务端配置
+
 ## v1.0.6
 
 - 修 `datasets_*` 6 个工具的 skill 文档:全部加 `workstation_id` 必填说明(原 backend bug 已修,server 强制 workstation_id,skill 文档对齐)

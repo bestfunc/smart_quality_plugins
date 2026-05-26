@@ -31,7 +31,7 @@ allowed-tools: detect_records_ping, detect_records_list, detect_records_get, det
    - `fileID` 是 MinIO 原始音频/图片对象
    - `roughProjectMarkJson` / `detailedProjectMarkJson` 是标注详情
    - `detectStageID` / `detectPointID` 串到检测流程哪一步
-5. 如要听原始音频:`files_presign_download(file_id=<fileID>)` 拿带签名的下载 URL
+5. 如要听原始音频:`files_presign_download(workstation_id, file_id=<fileID>)` 拿带签名的下载 URL。**workstation_id 必传**,后端查工位 file 表把 fileID 解析成 (bucket, path) 再签,返回 url + name + size + mimetype;不传只签 (bucket, object_key) 直传模式
 6. 如要看检测流程定义:用 record 里的 detectID 串 `detect_flows_get(...)`(注意:detect_flows 在主库,不分工位)
 
 ### 场景 B: 抽样质检
