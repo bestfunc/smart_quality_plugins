@@ -103,9 +103,31 @@ scope 对应关系见 [reference/04-key-concepts.md](../reference/04-key-concept
 
 ### Q：写场景就只能新建测试任务？
 
-是。当前约 20 个 tool 里**只有 1 个**写操作：`test_tasks_create_from_template`（基于模板新建测试任务**草稿**）。其他全是只读。
+不只。当前 6 个写 tool：
 
-设计意图：插件定位是"读多 + 编排多"，写操作 95% 仍在 Web 完成。
+- `test_tasks_create_from_template` —— 基于模板新建测试任务**草稿**（Web 人工 confirm 才生效）
+- `marks_set_rough` / `marks_batch_set_rough` —— 单 channel / 批量打粗标（v1.0.10）
+- `marks_add_detail` / `marks_update_detail` / `marks_delete_detail` —— 细标时间区段增删改（v1.0.10）
+
+其余 55 个 tool 全是只读。`detect_flows` / `algorithms` 模块**完全没有写权限**（故意的）。
+
+设计意图：插件定位是"读多 + 编排多 + 高频重复点击多"，敏感写（流程定义 / 算法参数）仍只能 Web 操作。
+
+### Q：v1.0.10 起 AI 能打标了,要怎么开 scope？
+
+需要 `mcp:datasets:write`。**老用户大概率没勾**（之前这个 scope 只用于"创建数据集草稿 / 导入样本",很少有人勾）。
+
+打开方法：
+
+1. Smart TPM Web → 个人设置 → 已连接的应用 → 找到 Claude Code → 撤销
+2. 终端重新连(`/plugin install` 触发 OAuth) → 这次勾上 `mcp:datasets:write`
+3. 验证: 让 AI 跑 `mark-samples-with-ai` skill, tool 能拿到说明 scope 到位
+
+### Q：AI 打标错了怎么撤回？
+
+- 细标(`marks_*_detail`): `marks_delete_detail(detail_id=...)` 软删,`annotation_history_list` 留底
+- 粗标: `marks_set_rough(channel_id=..., mark_code="")` 把 markCode 清空覆盖即可
+- 反查"AI 哪次会话改了哪个 channel": `annotation_history_list(channel_id=..., date_from=...)`
 
 ---
 

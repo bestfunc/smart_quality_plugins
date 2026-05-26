@@ -1,7 +1,7 @@
 ---
 name: about-smart-tpm-mcp
 display_name: Smart TPM MCP 集成百科
-description: Smart TPM 检测平台 Claude Code 插件 / MCP 集成层的方方面面 — 给插件用户、仓库维护者、销售演示者、速查者查阅。涵盖 marketplace 结构、3 个变体（local/test/prod）、MCP HTTP transport、OAuth 2.1 + PKCE + DCR 鉴权、scope 模型、工具一览（以后端 tools/list 为准）、9 个业务 skill 导览、多客户端兼容（Claude Code / Codex / Qwen CLI）。能根据使用场景给出合理建议。
+description: Smart TPM 检测平台 Claude Code 插件 / MCP 集成层的方方面面 — 给插件用户、仓库维护者、销售演示者、速查者查阅。涵盖 marketplace 结构、3 个变体（local/test/prod）、MCP HTTP transport、OAuth 2.1 + PKCE + DCR 鉴权、7 个 scope、9 个模块 61 个业务 tool（以后端 tools/list 为准）、11 个 skill 导览（含本百科）、姊妹插件 SmartTPM_Files_Plugin、多客户端兼容（Claude Code / Codex / Qwen Code）。能根据使用场景给出合理建议。
 user-invocable: true
 ---
 
@@ -11,7 +11,7 @@ user-invocable: true
 
 **范围限定**：本百科聚焦"插件 + MCP 集成"这一层（本仓库 `SmartTPM_Plugins/` 的全部产物）。Smart TPM 检测平台本身的产品全貌、前后端实现、业务流程，请查阅平台仓库各自的文档与 skill。
 
-不写代码 / 不调用 MCP 工具。如果你要实际操作数据集 / 检测流程 / 测试任务 / 算法，请用本仓库的 9 个业务 skill（1 Onboarding + 3 Reference + 5 Task，详见下方索引）。
+不写代码 / 不调用 MCP 工具。如果你要实际操作数据集 / 检测流程 / 测试任务 / 算法 / 生产检测记录 / 样本打标，请用本仓库的 10 个业务 skill（1 Onboarding + 3 Reference + 6 Task，详见下方索引）。文件下载（MinIO bucket / 音频 / artifact）走姊妹插件 [SmartTPM_Files_Plugin](https://github.com/bestfunc/SmartTPM_Files_Plugin) —— 两个插件指向同一个 MCP server，OAuth 一次浏览器同意两个都生效。
 
 ---
 
@@ -118,4 +118,4 @@ user-invocable: true
 - **不出现**：团队成员姓名 / git author / 邮箱 / 客户真实名 / 融资 / 营收 / 团队规模 / 内部失败决策辩论。
 - **保留**：内网 IP（192.168.2.121 / 192.168.2.175）与生产域名（smartquality.bestfunc.com）—— 用户已确认可写入。
 - **同步术语表**：reference / scenarios / faq 中每出现一个**首次新概念**，要在 `glossary/terms.md` 补一行。
-- **变体分发**：本 skill 原件位于 `plugins/_shared/skills/about-smart-tpm-mcp/`。如需让某变体的插件用户能直接 `/skill about-smart-tpm-mcp` 调用，物理复制一份到 `plugins/smart-tpm-{local,test,prod}/skills/about-smart-tpm-mcp/`（沿用现有 9 个 skill 的同步做法，不用 git symlink）。
+- **变体分发**：本 skill 原件位于 `plugins/_shared/skills/about-smart-tpm-mcp/`。如需让某变体的插件用户能直接 `/skill about-smart-tpm-mcp` 调用，物理复制一份到 `plugins/smart-tpm-{local,test,prod}/skills/about-smart-tpm-mcp/`（沿用其他 10 个 skill 的同步做法，不用 git symlink）。

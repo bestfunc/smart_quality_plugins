@@ -12,7 +12,7 @@ SmartTPM_Plugins/
 │   └── marketplace.json              ← 声明 3 个变体（路径 + 描述）
 ├── plugins/
 │   ├── _shared/
-│   │   └── skills/                   ← 9 个业务 skill + 1 本百科 的事实源
+│   │   └── skills/                   ← 10 个业务 skill + 1 本百科 的事实源
 │   │       ├── quickstart-smart-tpm-mcp/
 │   │       ├── smart-tpm-business-concepts/
 │   │       ├── dataset-fields-reference/
@@ -22,7 +22,8 @@ SmartTPM_Plugins/
 │   │       ├── create-test-task-from-template/
 │   │       ├── reproduce-customer-error/
 │   │       ├── query-detect-records/
-│   │       └── about-smart-tpm-mcp/  ← 本百科
+│   │       ├── mark-samples-with-ai/   ← v1.0.10 加,AI 辅助打标
+│   │       └── about-smart-tpm-mcp/    ← 本百科
 │   ├── smart-tpm-local/
 │   │   ├── .claude-plugin/plugin.json  ← URL = localhost:8000
 │   │   └── skills/                     ← _shared/skills 的物理拷贝
@@ -52,7 +53,7 @@ Windows 上 git symlink 配置麻烦、跨开发机表现不一致，本仓库�
 │  + 加载某变体的        │   MCP over HTTP  │  /.well-known/oauth-     │
 │    plugin.json         │ ───────────────► │    authorization-server  │
 │  + 注册 skill          │                  │                          │
-│  + OAuth 2.1 + PKCE    │ ◄─────────────── │  tools (按 scope         │
+│  + OAuth 2.1 + PKCE    │ ◄─────────────── │  61 业务 tool (按 scope  │
 │    + DCR               │   tool 列表       │    filter)               │
 │                        │                  │                          │
 │  用户说自然语言        │                  │  ServiceLayer            │
@@ -67,7 +68,7 @@ Windows 上 git symlink 配置麻烦、跨开发机表现不一致，本仓库�
 
 - **Transport = HTTP**（不是 stdio）。客户端不需要本机起 server 进程，直接连后端 HTTP endpoint。
 - **MCP server 不在本仓库**。本仓库只是声明 URL + 提供 skill 文档。MCP server 本体在 Smart TPM 后端 `api/v2/mcp` 路由下。
-- **9 个 skill 不是 MCP server 的一部分**。它们是 Claude Code 端的 markdown 文档 + frontmatter（`allowed-tools` 限定可用工具），由客户端解析。
+- **11 个 skill 不是 MCP server 的一部分**。它们是 Claude Code 端的 markdown 文档 + frontmatter（`allowed-tools` 限定可用工具），由客户端解析。
 - **OAuth 走标准 2.1 + PKCE + DCR 流程**：客户端发现 → 注册 → 跳浏览器 → 用户勾 scope → 回调拿 token；token 过期自动 refresh。
 
 ## plugin.json 关键字段
@@ -105,11 +106,15 @@ Claude Code 解析 `marketplace.json` → 进 `plugins/smart-tpm-prod/` → 读 
 ## 同 Smart TPM 平台仓库的关系
 
 ```
-bestfunc/smart_tpm_api  ────►  MCP server 实现 (FastAPI 路由 + tool 注册)
+bestfunc/smart_tpm_web_v2 ────►  MCP server 实现 (FastAPI 路由 + tool 注册;
+                                  当前 v1.6.1, 共 63 个 tool = 61 业务 + 2 文件)
                                        │
-                                       ▼
-bestfunc/smart_quality_plugins ───►  marketplace + skill 文档 + URL 配置
-(本仓库)
+            ┌──────────────────────────┴──────────────────────────┐
+            ▼                                                      ▼
+bestfunc/smart_quality_plugins                         bestfunc/SmartTPM_Files_Plugin
+  本仓库: marketplace + 11 skill + URL 配置             姊妹插件: 文件下载相关 skill,
+  (业务 61 tool)                                        共用同一个 MCP server endpoint,
+                                                        OAuth 一次同意两个都生效
 ```
 
 两个仓库的协作约定：

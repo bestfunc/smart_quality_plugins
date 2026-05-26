@@ -37,13 +37,13 @@ $ claude
 登录（公司账号）
    ↓
 看到 scope 勾选页（具体条目以后端 well-known 为准，下面是典型布局）：
-   ☐ mcp:datasets:read         看数据集
-   ☐ mcp:datasets:write        创建数据集草稿
-   ☐ mcp:detect_flows:read     看检测流程
-   ☐ mcp:test_tasks:read       看测试任务
-   ☐ mcp:test_tasks:write      基于模板新建任务
-   ☐ mcp:algorithms:read       看算法
-   ☐ mcp:detect_records:*      看生产检测记录 / 工位 / 文件下载
+   ☐ mcp:datasets:read         看数据集 / 标注 / 项目标记字典
+   ☐ mcp:datasets:write    ⚠️  创建数据集草稿 / 导入样本 / AI 打粗标+细标 (v1.0.10)
+   ☐ mcp:detect_flows:read     看检测流程 / 节点 / 执行记录 / 算法流
+   ☐ mcp:test_tasks:read       看测试任务 / 测试记录
+   ☐ mcp:test_tasks:write      基于模板新建任务草稿
+   ☐ mcp:algorithms:read       看算法 / 算法流 / 参数库
+   ☐ mcp:detect_records:read   看生产线检测记录(工位分库)
 
 按需勾选 → 点【同意授权】
    ↓
@@ -60,19 +60,20 @@ $ claude
 
 ```bash
 > /mcp
-smart-tpm: ✓ connected (约 20 个 tool 可用)
+smart-tpm: ✓ connected (61 业务 tool 可用,以 tools/list 为准)
 
 > /skill
-quickstart-smart-tpm-mcp         快速上手
-smart-tpm-business-concepts      业务概念速查
-dataset-fields-reference         数据集字段速查
-detect-flow-node-reference       检测流程节点速查
-sample-dataset-extraction        抽取数据集样本
+quickstart-smart-tpm-mcp            快速上手
+smart-tpm-business-concepts         业务概念速查
+dataset-fields-reference            数据集字段速查
+detect-flow-node-reference          检测流程节点速查
+sample-dataset-extraction           抽取数据集样本
 locate-test-record-algorithm-chain  定位测试记录算法链路
-create-test-task-from-template   基于模板新建测试任务
-reproduce-customer-error         复现客户报错
-query-detect-records             查检测记录
-about-smart-tpm-mcp              本百科
+create-test-task-from-template      基于模板新建测试任务
+reproduce-customer-error            复现客户报错
+query-detect-records                查检测记录
+mark-samples-with-ai                AI 辅助打标 (v1.0.10)
+about-smart-tpm-mcp                 本百科
 ```
 
 两个命令都有期望输出 → 装好了。
@@ -89,9 +90,10 @@ AI 会自动匹配 `quickstart-smart-tpm-mcp` 或 `sample-dataset-extraction` sk
 
 **第一次跑通后的推荐探索路径**：
 
-1. **复盘客户报错**（最有视觉冲击）→ 让 AI 走 `reproduce-customer-error` skill，给它一个产品编号 + 工位 + 时间
-2. **仿测试任务**（唯一的写场景）→ `create-test-task-from-template`，给它一个模板任务号
-3. **算法链路追溯** → `locate-test-record-algorithm-chain`，给它一条 test_record id
+1. **复盘客户报错**（最有视觉冲击）→ 让 AI 走 `reproduce-customer-error` skill，给它一个产品编号 + 工位 + 时间。v1.0.9 起内部走 `detect_records_trace` 一键拿 3 层链路
+2. **算法链路追溯** → `locate-test-record-algorithm-chain`，给它一条 test_record id；现在能看到算法节点级 in/out (`detect_logs_*`)
+3. **仿测试任务**（写）→ `create-test-task-from-template`，给它一个模板任务号
+4. **AI 辅助打标**（v1.0.10 新加，写）→ `mark-samples-with-ai`，给它一个数据集 + 项目 + 想批量标的 channel 列表；**先在 Web 抽样验证 AI 标的对**，再放开批量
 
 ## Step 5：日常使用心智
 
@@ -100,8 +102,10 @@ AI 会自动匹配 `quickstart-smart-tpm-mcp` 或 `sample-dataset-extraction` sk
 | 查数据 | "查一下 X" / "列一下当前 Y" |
 | 复盘 | "复现一下客户报的 X 这个错" |
 | 仿配置 | "仿 #1024 模板新建一份，X 改成 Y" |
+| 批量打标 | "把数据集 X 这 200 个 channel 全标成 OK" / "给这个 channel 加一段 NG 细标 12.5-18.3s" |
 | 不知道有啥能查 | "你都能查哪些 Smart TPM 的东西？" |
 | 查术语 | `/skill smart-tpm-business-concepts` 直调 |
+| 切环境 | 改 `.claude/settings.json` 的 `enabledPlugins` 后缀(`-prod`↔`-test`↔`-local`)→ 重启 |
 
 AI 会**自己挑 skill 和 tool**。你不需要记 tool 名。
 
@@ -111,12 +115,15 @@ AI 会**自己挑 skill 和 tool**。你不需要记 tool 名。
 
 ## 切换变体（少数场景）
 
-需要从 prod 切到 test（或反之）时：
+**推荐**：改 `.claude/settings.json` 的 `enabledPlugins` 后缀 → 重启 Claude Code → 重新走 OAuth。
 
-```bash
-> /plugin uninstall smart-tpm-prod
-> /plugin install smart-tpm-test
-[重新走一次 OAuth，因为是不同环境的不同账号体系]
+```json
+// .claude/settings.json
+"enabledPlugins": {
+  "smart-tpm-prod@smart_quality_plugins": true   // 改成 -test / -local
+}
 ```
 
-**不要同时装两个变体**：三变体的 MCP server key 都是 `smart-tpm`，会互相覆盖（见 [reference/03-edition-comparison.md](../reference/03-edition-comparison.md)）。
+不用 uninstall + install 一遍 plugin 文件,只是切启用状态。
+
+**不要同时启用两个变体**：三变体的 MCP server key 都是 `smart-tpm`，会互相覆盖（见 [reference/03-edition-comparison.md](../reference/03-edition-comparison.md)）。

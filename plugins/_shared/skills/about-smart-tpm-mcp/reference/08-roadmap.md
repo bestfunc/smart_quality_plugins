@@ -12,16 +12,23 @@
 | 1.0.3 | 新增 `smart-tpm-prod` 生产变体（初版用 `https://smartquality.bestfunc.com`） |
 | 1.0.3-fix | prod URL 切到内网 IP `http://192.168.2.175:8080`（规避自签证书与客户端兼容性问题） |
 | 1.0.4 | 新增第 9 个 skill `query-detect-records`（接入 detect_records 模块 3 个 tool） |
+| 1.0.5 | 新增第 10 个 skill `about-smart-tpm-mcp`（本百科）；统一各处 scope 描述去掉硬编码 |
+| 1.0.6 | 配套后端 v1.5.92：`datasets_*` 6 个工具全部加 `workstation_id` 必填；修 `version_id ≠ dataset_id` 老坑 |
+| 1.0.7 | 配套后端 v1.5.93：`files_presign_download` 加 B 模式 `(workstation_id, file_id)`；`query-detect-records` 5 步下载链路、`sample-dataset-extraction` 加下载步骤 |
+| 1.0.8 | `sample-dataset-extraction` 加 `datasets_export_manifest`（>20 条走批量分支，1 次拿全量 manifest 替代 N 次 `get_annotations`） |
+| 1.0.9 | 配套后端 v1.6.0 新增 31 个 tool：`reproduce-customer-error` + `locate-test-record-algorithm-chain` 接入 `detect_records_trace`（一键 3 层链路）+ `detect_logs_*`（算法节点级 in/out）+ `detect_flow_executions_*`（流程执行实例）+ 元数据反查 + `annotation_history_list` + `audio_ai_req_logs_list` |
+| 1.0.10 | 配套后端 v1.6.1：新增 5 个 `marks_*` 写 tool（`mcp:datasets:write` scope）；新增第 11 个 skill `mark-samples-with-ai`（AI 辅助打标 SOP：先 `project_marks_list` 拿字典再用 markCode、`overwrite=false` 安全默认、批量上限 200 条/次）；175 部署侧 tool 总数 58 → 63 |
 
 ## 在调研
 
 | 方向 | 现状 | 设想 |
 |---|---|---|
-| `mcp:detect_records:*` scope 文档对齐 | 1.0.4 新加 detect_records 模块，README 的 6 scope 表未同步更新；后端实际授权以 `<base>/.well-known/oauth-authorization-server` 的 `scopes_supported` 为准 | 设想下次 minor 版同步 README scope 表，确认 detect_records 是单列 scope 还是复用 datasets 既有 scope |
 | `mcp:detect_flows:write` | 故意不开，防 AI 误改生产流程配置 | 设想加一个"草稿模式"——AI 改的不立刻生效，需 Web 人工 confirm；同时配置 audit log 强化 |
-| **更多 task skill** | 当前 5 个 task skill | 候选方向：算法效果回归对比、批量数据集合并、定时巡检报告生成 |
+| `mcp:algorithms:write` | 故意不开，防 AI 误改算法参数 | 同上"草稿模式"思路；目前没需求驱动，暂搁置 |
+| **更多 task skill** | 当前 6 个 task skill（v1.0.10 后） | 候选方向：算法效果回归对比、批量数据集合并、定时巡检报告生成、AI 自动 cherry-pick 数据集子集做 retrain |
 | **官方 marketplace 发布** | 当前仅在 `bestfunc/smart_quality_plugins` 仓库自助安装 | 计划评估是否提交到 Anthropic 官方 marketplace（取决于公司对外开放策略） |
 | **prod 域名 + 正规证书** | 当前 prod 走内网 IP HTTP | 设想后续如有公网部署需求，配置正规 CA 签发证书后切回 `https://smartquality.bestfunc.com` |
+| **marks 写 tool 风险控制升级** | v1.0.10 首发：`overwrite=false` 安全默认 + 批量上限 200 条 + service 层落审计 | 设想加"AI 打标前必须先抽样 confirm"的 skill SOP，避免 AI 大规模错标无人察觉 |
 
 ## 计划中（已立项但未动工）
 

@@ -67,9 +67,24 @@
 ```
 
 **话术钩子**：
-> "整个约 20 个 tool 里只有这 1 个写操作。其他全是只读。即便是这个写，也只是创建草稿 —— 真正生效还要人在 Web 里点确认。AI **不能**改你们的生产配置、不能动检测流程、不能改算法参数。"
+> "整个 61 个业务 tool 里目前只开了 6 个写：1 个新建任务草稿(本 demo) + 5 个 marks_* 打标(下个 demo 演)。其他 55 个全是只读。即便是这些写，也走草稿/审计落库流程,要么人工 confirm 才生效,要么 AI 改了什么 `annotation_history_list` 都能查出来。AI **不能**改你们的检测流程定义、不能改算法参数、不能动生产配置。"
 
-### Demo 4：权限与审计（2 分钟）
+### Demo 4：AI 辅助打标（2 分钟，v1.0.10）
+
+```
+> 把数据集 NSK_audio_v3 的 20251101 工位日批样本(workstation_id=2)
+> 全部标成 OK 粗标 — 标错的话事后可以查 annotation_history 回滚
+[AI 走 mark-samples-with-ai skill:
+  1. project_marks_list → 拿"OK" 的 markCode 字典
+  2. rough_marks_list → 抽样看现状,确认数据范围
+  3. marks_batch_set_rough(channel_ids=[...], mark_code="OK", overwrite=false) → 一刀
+  4. annotation_history_list → 自检 createBy=真实 user_id,落审计表]
+```
+
+**话术钩子**：
+> "原来工程师在 dataset annotate 页右键一条条点 markCode,200 条要点半小时。AI 这里**一句话搞定**,但加了三道安全:**先 `project_marks_list` 拿字典再用 markCode(不让 AI 编)**、默认 `overwrite=false` 不动冲突、所有改动落 `DetectAnnotationHistory` 表,事后随时查谁(AI 还是人)在哪次会话改了什么。"
+
+### Demo 5：权限与审计（2 分钟）
 
 打开 Smart TPM Web → 个人设置 → 已连接的应用：
 
@@ -78,11 +93,12 @@
 应用：Claude Code (smart-tpm-test)
 已授予 scope：
   ✓ mcp:datasets:read
+  ✓ mcp:datasets:write      ⚠️ 含 marks_* 打标
   ✓ mcp:detect_flows:read
   ✓ mcp:test_tasks:read
   ✓ mcp:test_tasks:write
   ✓ mcp:algorithms:read
-  ✓ mcp:detect_records:*
+  ✓ mcp:detect_records:read
 最近调用：12 分钟前
 [撤销授权] 按钮
 ```
@@ -112,10 +128,12 @@
 
 **当前设计上不会**：
 
-- 约 20 个 tool 里只有 **1 个写操作**（基于模板新建测试任务草稿），且**生成的是草稿**，要在 Web 里人工确认才生效
-- `detect_flows` 模块**完全没有写权限**（故意的，防 AI 改坏生产流程）
+- 61 个业务 tool 里目前只开了 **6 个写操作**：1 个新建任务草稿(`test_tasks_create_from_template`) + 5 个样本打标(`marks_*`)
+- 任务草稿**要在 Web 人工 confirm 才真生效**
+- 打标改动**全部走 service 层**(跟人手工点的右键打标走同一条代码路径)、自动落 `DetectAnnotationHistory` 审计表、`createBy`/`updateBy` 是真实 user_id 不是 `"MCP"`、`overwrite=false` 默认不动已有标
+- `detect_flows` / `algorithms` 模块**完全没有写权限**（故意的，防 AI 改坏生产流程 / 算法参数）
 - 每次操作都需要对应 OAuth scope，**用户授权时可只勾读权限**
-- 所有调用都落审计日志（`mcp_audit_log` 表），超管可在 Web → 系统设置 → MCP 审计 看到完整 trace
+- 所有调用都落 `mcp_audit_log` 表，超管可在 Web → 系统设置 → MCP 审计 看到完整 trace
 
 如果客户对此还有顾虑，引导到 [reference/04-key-concepts.md](../reference/04-key-concepts.md) 的 Scope 段做详细解释。
 

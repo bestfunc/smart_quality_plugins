@@ -15,7 +15,7 @@
 |---|---|---|
 | `marketplace.json` | 1 | 顶层 marketplace 声明（列出 3 个变体） |
 | `plugin.json` | 3 | 每个变体一份；声明 MCP server URL + 元信息 |
-| `SKILL.md` | 10 | 9 个业务 skill + 1 本百科 |
+| `SKILL.md` | 11 | 10 个业务 skill + 1 本百科 |
 | `reference/*.md` `scenarios/*.md` 等 | 本百科子文件 | 本百科的事实层 / 场景层 / 话术层 / 术语层 |
 | `README.md` `CHANGELOG.md` | 2 | 仓库门面与版本日志 |
 

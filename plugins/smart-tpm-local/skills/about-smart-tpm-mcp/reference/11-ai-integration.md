@@ -83,7 +83,7 @@ Qwen Code 对 MCP `mcpServers` 配置块的解析，会**误把缺 `httpUrl` 字
 
 1. 让客户端读 `plugin.json`（或对应配置格式），看是否能正确识别 MCP server
 2. 客户端能否走完 OAuth 2.1 + PKCE + DCR 流程（这步最容易出兼容性问题）
-3. 调 `tools/list`，能否拿到本插件的全部 tool（约 20 个）
+3. 调 `tools/list`，能否拿到本插件的全部 tool（当前 v1.0.10 = 61 业务 tool；最终以后端 `tools/list` 为准）
 4. 触发其中一个 read tool（如 `datasets_list`），能否拿到返回
 5. 加载某个 skill 文件，能否被客户端解析 frontmatter
 

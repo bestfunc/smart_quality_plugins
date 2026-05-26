@@ -26,15 +26,20 @@
 
 **示例**：本插件里 `datasets_query_samples(datasetId, label='NG', limit=20)` 就是一个 tool。
 
-**计数**：本插件目前约 20 个 tool，分布在 5 个模块（最终以后端 `tools/list` 为准）：
+**计数**：本插件目前 **9 个模块共 61 个业务 tool**（最终以后端 `tools/list` 为准；175 部署侧总 63 = 61 业务 + 2 文件下载走姊妹插件）：
 
-| 模块前缀 | 典型 tool |
-|---|---|
-| `datasets_*` | `_list` / `_get` / `_query_samples` / `_get_annotations` / `_create_draft` / `_import_samples` |
-| `detect_flows_*` | `_list` / `_get` / `_list_nodes` |
-| `test_tasks_*` | `_list` / `_get` / `_create_from_template` / `test_records_get` |
-| `algorithms_*` | `_list` / `_get` / `algorithm_flows_get` |
-| `detect_records_*` | `_ping` / `_list` / `_get` / `detect_stations_list` / `files_presign_download` |
+| 模块 | tool 数 | 典型 tool |
+|---|---|---|
+| 数据集 & 标注（读） | 7 | `datasets_list/get/query_samples/get_annotations`，`datasets_create_draft/import_items/export_manifest`（1 次拿全量 manifest 替代 N 次 get_annotations） |
+| 标记系统（读 + 写） | 9 | 读：`project_marks_list/rough_marks_list/detail_marks_list/annotation_history_list`<br>写：`marks_set_rough/batch_set_rough/add_detail/update_detail/delete_detail`（v1.0.10） |
+| 检测流程 | 5 | `detect_flows_list/get/list_nodes`，`algorithm_flows_list/get` |
+| 算法 | 5 | `algorithms_list/get`，`algorithm_params_search` 等 |
+| 测试任务 & 测试记录 | 5 | `test_tasks_list/get/create_from_template`，`test_records_list/get` |
+| 生产检测记录 | 3 | `detect_records_list/get/ping`，`detect_points_list`，`detect_stations_list` |
+| 链路追踪（v1.0.10） | 9 | `detect_records_trace`（channel_id 一键拿 3 层链路）+ `detect_logs_executions/stages/nodes` + `detect_flow_executions_*` |
+| 元数据反查 | 13 | `products/devices/assembly_lines/projects/workstations_list/users_get/detection_dict_list/model_artifacts_*`（3 级树） |
+| 配置查询 | 3 | `station_channel_list/detect_station_stages_list/detect_versions_list` |
+| 杂项 | 2 | `audio_ai_req_logs_list`（AI 引擎调用快照）、`project_products_list` |
 
 完整名单以各 skill 的 `allowed-tools` frontmatter 为准（Smart TPM 后端 `tools/list` 是最终真相）。
 
@@ -59,42 +64,44 @@ allowed-tools: a, b, c     # 限定本 skill 内 AI 只能调这些 tool
 ---
 ```
 
-**本仓库的 9 个 skill**（详见 [02-architecture.md](./02-architecture.md) 仓库布局）：
+**本仓库的 11 个 skill**（详见 [02-architecture.md](./02-architecture.md) 仓库布局）：
 
 | # | Skill | 类型 |
 |---|---|---|
-| 1 | `quickstart-smart-tpm-mcp` | Onboarding |
-| 2 | `smart-tpm-business-concepts` | Reference |
-| 3 | `dataset-fields-reference` | Reference |
-| 4 | `detect-flow-node-reference` | Reference |
-| 5 | `sample-dataset-extraction` | Task |
-| 6 | `locate-test-record-algorithm-chain` | Task |
-| 7 | `create-test-task-from-template` | Task |
-| 8 | `reproduce-customer-error` | Task |
-| 9 | `query-detect-records` | Task |
-
-（第 10 个 `about-smart-tpm-mcp` 是本百科，不计入业务 skill。）
+| 1 | `about-smart-tpm-mcp` | 百科（user-invocable，本文件所在 skill） |
+| 2 | `quickstart-smart-tpm-mcp` | Onboarding |
+| 3 | `smart-tpm-business-concepts` | Reference |
+| 4 | `dataset-fields-reference` | Reference |
+| 5 | `detect-flow-node-reference` | Reference |
+| 6 | `sample-dataset-extraction` | Task |
+| 7 | `locate-test-record-algorithm-chain` | Task |
+| 8 | `create-test-task-from-template` | Task（写） |
+| 9 | `reproduce-customer-error` | Task |
+| 10 | `query-detect-records` | Task |
+| 11 | `mark-samples-with-ai` | Task（写）⚠️ v1.0.10 新加，要 `mcp:datasets:write` |
 
 ---
 
 ## 4. Scope（OAuth scope）
 
-**定义**：OAuth 授权时用户勾选的细粒度权限单位。本插件按"模块 × 读写"切分为 6 个 scope：
+**定义**：OAuth 授权时用户勾选的细粒度权限单位。本插件按"模块 × 读写"切分为 **7 个 scope**：
 
 | Scope | 含义 |
 |---|---|
-| `mcp:datasets:read` | 看数据集列表 / 详情 / 抽样本 / 看标注 |
-| `mcp:datasets:write` | 创建数据集草稿 / 导入样本 / **AI 打粗标 + 细标**(v1.0.10 起,`marks_*` 5 个写 tool) |
-| `mcp:detect_flows:read` | 看检测流程 / 节点 / 执行记录 |
+| `mcp:datasets:read` | 看数据集列表 / 详情 / 抽样本 / 看标注 / 项目标记字典 |
+| `mcp:datasets:write` ⚠️ | 创建数据集草稿 / 导入样本 / **AI 打粗标 + 细标**（v1.0.10 起 `marks_set_rough` / `batch_set_rough` / `add_detail` / `update_detail` / `delete_detail` 共 5 写 tool） |
+| `mcp:detect_flows:read` | 看检测流程 / 节点 / 执行记录 / 算法流 |
 | `mcp:test_tasks:read` | 看测试任务 / 测试记录 |
 | `mcp:test_tasks:write` | 基于模板新建测试任务草稿 |
 | `mcp:algorithms:read` | 看算法 / 算法流 / 参数库 |
-| `mcp:detect_records:*` | 看生产检测记录 / 工位 / 文件下载（1.0.4 新加；准确 scope 名以后端 well-known 为准） |
+| `mcp:detect_records:read` | 看生产检测记录（工位分库） |
 
 **注意**：
-- `detect_flows` 当前**不开 `:write`** —— 故意的，避免 AI 改坏生产配置
-- `detect_records` 模块（1.0.4 新加）的具体 scope 名以后端 `<base>/.well-known/oauth-authorization-server` 的 `scopes_supported` 为准；README 截至 1.0.0 的 6-scope 表已过时
+- `detect_flows` / `algorithms` 当前**不开 `:write`** —— 故意的，避免 AI 改坏生产配置
+- `datasets:write` 自 v1.0.10 起**含义扩展**：除原"创数据集草稿 / 导入样本"外加 5 个 `marks_*` 打标写 tool。**老用户用 marks 前需要重新 OAuth 勾这个 scope**（之前没相关 tool，大概率没勾）
+- 文件下载相关 tool（`files_presign_download` 等）由姊妹插件 [SmartTPM_Files_Plugin](https://github.com/bestfunc/SmartTPM_Files_Plugin) 提供，scope 由该插件管
 - 用户每次授权可以**只勾自己需要的 scope**，未勾的 scope 对应的 tool 在 `tools/list` 里被过滤掉
+- 具体 scope 名以后端 `<base>/.well-known/oauth-authorization-server` 的 `scopes_supported` 为准
 
 ---
 

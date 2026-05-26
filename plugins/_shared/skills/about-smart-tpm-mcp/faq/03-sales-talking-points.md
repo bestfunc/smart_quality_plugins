@@ -44,7 +44,7 @@
 强调三点：
 
 - **细粒度授权**：按模块 × 读写切分的 scope 由用户自己勾，不是 all-or-nothing
-- **完整审计**：`mcp_audit_log` 表落每次调用，超管可查
+- **完整审计**：`mcp_audit_log` 表落每次调用; 打标写操作另外落 `DetectAnnotationHistory` 业务审计表, `createBy`/`updateBy` 是真实 user_id (不是字面值 `"MCP"`)
 - **物理隔离**：service 层强制按 org + workstation 隔离，AI 拿不到隔壁组织的数据
 
 ---
@@ -59,9 +59,16 @@
 
 ### "AI 会不会改坏我们配置？"
 
-**核心回答**：约 20 个 tool 里只有 1 个写，且生成的是草稿要在 Web 人工确认。`detect_flows` 模块完全没开写权限。
+**核心回答**：61 个业务 tool 里只开了 6 个写，分两档：
+
+- **草稿型**(1 个): `test_tasks_create_from_template` —— 生成的是草稿,Web 人工 confirm 才真生效
+- **审计落库型**(5 个 `marks_*`,v1.0.10): 跟工程师在 Web 右键打标走**完全同一条 service 代码**,自动写 `DetectAnnotationHistory` 审计表,`createBy`=真实 user_id,`overwrite=false` 默认不动冲突,批量上限 200 条/次
+
+`detect_flows` / `algorithms` 完全没开写权限。
 
 **追加论据**：详见 [reference/04-key-concepts.md](../reference/04-key-concepts.md) 的 Scope 段。如果客户问"为啥不开 detect_flows:write"，答案是"产品决策，防 AI 误改生产流程；未来计划走草稿模式渐进开放"（弱措辞，不承诺时间）。
+
+如果客户问"AI 打错标怎么办"：`annotation_history_list` 可以反查"哪次 AI 会话改了哪个 channel",可单点撤销或 service 层一刀回滚。
 
 ### "我们已经用了 X 客户端（非 Claude），能接吗？"
 
