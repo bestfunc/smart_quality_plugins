@@ -1,5 +1,13 @@
 # CHANGELOG
 
+## v1.0.10
+
+- 配套 web_v2 v1.6.1:后端加 5 个 `marks_*` 写 tool(scope `mcp:datasets:write`,baseline 已 seed 不需 alembic),AI 现在能直接给样本打**粗标**(`marks_set_rough` 单 channel / `marks_batch_set_rough` 多 channel 一刀)和**细标**(`marks_add_detail` 时间区段 + 类型 / `marks_update_detail` / `marks_delete_detail`),复刻 dataset annotate 页面右键打标的工程师手动流程
+- 新增第 11 个 skill `mark-samples-with-ai` —— AI 辅助打标的 SOP,要求先 `project_marks_list` 拿字典再用 markCode、`overwrite=false` 安全默认、批量上限 200 条/次、reproduce 链路靠 `annotation_history_list` 反查
+- 写操作全走现有 `DatasetService`,createBy/updateBy 用 `ctx.user_id` 自动填(不是 "MCP"),service 层**自动写 `DetectAnnotationHistory`**,事后可审计「AI 哪次会话改了什么」
+- `about-smart-tpm-mcp/reference/04-key-concepts.md` 把 `mcp:datasets:write` 行扩到含 `marks_*` 五个写 tool,提醒老用户重新 OAuth 勾这个 scope 才能用(之前没 tool 用,大概率没勾)
+- 175 部署侧后端 tool 总数 58 → 63(本次 v1.0.10 只动 plugin 文档与 skill,backend image 由 web_v2 v1.6.1 提供)
+
 ## v1.0.7
 
 - 配套 web_v2 v1.5.93 fix:`files_presign_download` 新增 B 模式 `(workstation_id, file_id)`,后端查工位 file 表把 fileID 解析成 (bucket, path) 再签 URL,返回 url + name + size + mimetype 元数据;A 模式 `(bucket, object_key)` 直传保留

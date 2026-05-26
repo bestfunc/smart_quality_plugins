@@ -84,7 +84,7 @@ allowed-tools: a, b, c     # 限定本 skill 内 AI 只能调这些 tool
 | Scope | 含义 |
 |---|---|
 | `mcp:datasets:read` | 看数据集列表 / 详情 / 抽样本 / 看标注 |
-| `mcp:datasets:write` | 创建数据集草稿 / 导入样本 |
+| `mcp:datasets:write` | 创建数据集草稿 / 导入样本 / **AI 打粗标 + 细标**(v1.0.10 起,`marks_*` 5 个写 tool) |
 | `mcp:detect_flows:read` | 看检测流程 / 节点 / 执行记录 |
 | `mcp:test_tasks:read` | 看测试任务 / 测试记录 |
 | `mcp:test_tasks:write` | 基于模板新建测试任务草稿 |

@@ -1,7 +1,7 @@
 {
   "name": "smart-tpm-test",
-  "description": "Smart TPM 检测平台 MCP 插件 - 内网测试版（http://192.168.2.121:8080，部门测试环境）。10 个 skill 覆盖数据集/检测流程/测试任务/算法/生产检测记录 5 个模块的查询与受控写。",
-  "version": "1.0.9",
+  "description": "Smart TPM 检测平台 MCP 插件 - 内网测试版（http://192.168.2.121:8080，部门测试环境）。11 个 skill 覆盖数据集/检测流程/测试任务/算法/生产检测记录 5 个模块的查询与受控写(含 AI 打粗标/细标)。",
+  "version": "1.0.10",
   "author": {
     "name": "bestfunc"
   },
