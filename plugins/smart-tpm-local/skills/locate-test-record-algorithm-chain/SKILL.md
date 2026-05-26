@@ -1,8 +1,11 @@
 ---
 name: locate-test-record-algorithm-chain
 description: 用户给一个 test_record id 或编号,想追溯它走了哪条 detect_flow、哪个算法流、用了哪个算法 + 阈值时使用。
-allowed-tools: test_records_get, detect_flows_get, detect_flows_list_nodes, algorithm_flows_get, algorithms_get
+allowed-tools: test_records_get, detect_flows_get, detect_flows_list_nodes, algorithm_flows_get, algorithms_get, detect_logs_executions_list, detect_logs_executions_get, detect_logs_stages_list, detect_logs_stages_get, detect_logs_nodes_list, detect_logs_nodes_get, detect_flow_executions_list, detect_flow_executions_get, detect_records_trace, audio_ai_req_logs_list
 ---
+
+> **v1.6.0 起新增**:`detect_logs_*` 系列 + `detect_flow_executions_*` + `audio_ai_req_logs_list`,可看算法节点级 in/out + AI 引擎调用快照,reproduce 时算法工程师视角的完整链路。
+
 
 # 定位测试记录算法链路
 

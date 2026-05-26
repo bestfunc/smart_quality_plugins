@@ -1,8 +1,12 @@
 ---
 name: reproduce-customer-error
 description: 用户(工程师)拿到客户报错的描述 + 一条 test_record id,想梳理上下文给出"可能原因 + 复核步骤"清单时使用。纯只读追溯,不做修改。
-allowed-tools: test_records_get, test_tasks_get, detect_flows_get, detect_flows_list_nodes, algorithm_flows_get, algorithms_get, datasets_get, datasets_get_annotations
+allowed-tools: test_records_get, test_tasks_get, detect_flows_get, detect_flows_list_nodes, algorithm_flows_get, algorithms_get, datasets_get, datasets_get_annotations, detect_records_list, detect_records_get, detect_records_trace, detect_logs_executions_list, detect_logs_executions_get, detect_logs_stages_list, detect_logs_stages_get, detect_logs_nodes_list, detect_logs_nodes_get, detect_flow_executions_list, detect_flow_executions_get, products_get, devices_get, users_get, annotation_history_list, audio_ai_req_logs_list, files_presign_download
 ---
+
+> **v1.6.0 起新增**:`detect_records_trace(channel_id)` 一键拿完整 3 层(execution+stages+nodes),替代以前手串 3-4 次工具。
+> 详见 [docs/2026-05-26-mcp-tool-export-manifest-guide.md](../../../docs/) 同期补充。
+
 
 # 复现客户报错
 
