@@ -1,5 +1,14 @@
 # CHANGELOG
 
+## v1.0.11
+
+- 配套 web_v2 v1.6.5:后端新增 `datasets_export_files_manifest` —— **专为 0 细标的原始音频数据集**做批量下载,跟 segment 驱动的 `datasets_export_manifest` 互补
+  - 走 `version_id` 拿数据集版本全部唯一 fileID(后端按 fileID 去重),响应 `files[].sourceWavUrl` 是 presigned URL,客户端 wget/curl stream 即可,**不切片不要 JSON sidecar**
+  - 限额:limit 默认 5000 上限 20000,远高于 export_manifest(2000/5000),给"算法复核/原始语料"这类整集导出留余量
+  - scope 复用 `mcp:datasets:read`(老用户零重授权);REST 入口 `POST /api/v2/appapi/v1/dataset/export-files-manifest`(scope `appapi:dataset`)
+- `sample-dataset-extraction` SKILL 升级:两路批量 → 三路批量,加判定规则(看 `totalDetailMarkCount` 走 A/B/探查),加流程 B 完整调用样例 + Python wget 脚本
+- 后端 tool 总数 63 → 64
+
 ## v1.0.10
 
 - 配套 web_v2 v1.6.1:后端加 5 个 `marks_*` 写 tool(scope `mcp:datasets:write`,baseline 已 seed 不需 alembic),AI 现在能直接给样本打**粗标**(`marks_set_rough` 单 channel / `marks_batch_set_rough` 多 channel 一刀)和**细标**(`marks_add_detail` 时间区段 + 类型 / `marks_update_detail` / `marks_delete_detail`),复刻 dataset annotate 页面右键打标的工程师手动流程
