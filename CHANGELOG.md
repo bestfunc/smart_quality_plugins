@@ -1,5 +1,12 @@
 # CHANGELOG
 
+## v1.0.13
+
+- 新增第 13 个 skill `about-net-audio` —— **net_audio 联网录音系统（嵌入式音频前端 + 算法直调）的产品百科**（user-invocable，按开发/现场运维/上游集成方/速查四类受众分流到 reference / scenarios / faq / glossary）。覆盖双进程架构（smartaudio 8090 + smartaudio-admin 8091）、A/B/C/D 物理通道与内部声道映射、BufferPool / RingBuffer / cacheFileStream 三套音频管道、灵敏度调校（yaml+restart 路径）、`stop_and_fetch` 算法直调接口、mDNS 唯一 host、Rock Pi S 出厂镜像 4 大克隆冲突、现场部署 / 滚动升级 / 故障排查。
+  - 纯文档 skill，无 tool 调用，后端无变化；与 `about-audio-quality`（音频质检后端推理引擎）互补——后者讲算法侧，前者讲音频采集前端。
+  - 内容由 `net_audio` 仓经多轮审计后原样拷入；跨仓库后指向 `internal/*` / `admin/*` / `docs/*` 的相对链接降级为行内代码引用（`` `internal/channel/label.go` ``），读者按路径回 net_audio 仓库定位源码。
+  - `_shared/skills/` 物理复制到 3 变体；README「Skill 一览」12→13（2 百科→3 百科）；三变体 plugin.json + marketplace.json 描述同步至「13 个 skill」
+
 ## v1.0.12
 
 - 新增第 12 个 skill `about-audio-quality` —— **音频质检后端（`ai_api_server_v2`）的产品百科**（user-invocable，按开发/运维/速查三类受众分流到 reference / scenarios / faq / glossary）。覆盖 DAG 流程引擎、检测引擎与双视角聚合、21+ BF_* 算法模型、三级参数解析、4 GPU 集群与发布运维、技术栈、路线图。
