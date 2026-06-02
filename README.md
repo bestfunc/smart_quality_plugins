@@ -57,7 +57,7 @@ OAuth 2.1 + PKCE + DCR。**不需要复制粘贴 token**,浏览器一次同意�
 | 配置查询 | 3 | `station_channel_list`, `detect_station_stages_list`, `detect_versions_list` |
 | 杂项 | 2 | `audio_ai_req_logs_list`(算法引擎调用快照), `project_products_list` |
 
-## Skill 一览(11 个 = 1 百科 + 4 文档 + 6 任务)
+## Skill 一览(12 个 = 2 百科 + 4 文档 + 6 任务)
 
 | # | Skill | 类型 | 主要工具 |
 |---|---|---|---|
@@ -72,6 +72,7 @@ OAuth 2.1 + PKCE + DCR。**不需要复制粘贴 token**,浏览器一次同意�
 | 9 | `reproduce-customer-error` | Task | 全 *_read + `annotation_history_list` + `detect_records_trace` + `audio_ai_req_logs_list` |
 | 10 | `query-detect-records` | Task | `detect_records_*`, `detect_stations_list`, `files_presign_download` |
 | 11 | **`mark-samples-with-ai`** ⚠️ | Task(写) | `marks_set_rough/batch_set_rough/add_detail/update_detail/delete_detail` — **要 `mcp:datasets:write`** |
+| 12 | `about-audio-quality` | 百科(user-invocable) | — (纯文档:音频质检后端 ai_api_server_v2 的架构/DAG引擎/算法模型/集群部署百科) |
 
 ## 写操作安全 / 审计
 
@@ -89,7 +90,7 @@ OAuth 2.1 + PKCE + DCR。**不需要复制粘贴 token**,浏览器一次同意�
 
 ## 当前版本
 
-`v1.0.10`(配套后端 smart_tpm_web_v2 v1.6.1,后端 tool 总数 63 = 61 业务 + 2 files)
+`v1.0.12`(本次新增 `about-audio-quality` 音频质检后端百科 skill,纯文档,后端 tool 无变化)
 
 ## License
 

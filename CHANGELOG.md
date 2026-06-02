@@ -1,5 +1,12 @@
 # CHANGELOG
 
+## v1.0.12
+
+- 新增第 12 个 skill `about-audio-quality` —— **音频质检后端（`ai_api_server_v2`）的产品百科**（user-invocable，按开发/运维/速查三类受众分流到 reference / scenarios / faq / glossary）。覆盖 DAG 流程引擎、检测引擎与双视角聚合、21+ BF_* 算法模型、三级参数解析、4 GPU 集群与发布运维、技术栈、路线图。
+  - 纯文档 skill，无 tool 调用，后端无变化；与 `about-smart-tpm-mcp`（MCP/插件层百科）互补——后者讲平台对接，前者讲后端推理引擎。
+  - 内容由 `ai_api_server_v2` 仓经多智能体审计（源码逐行核对）后原样拷入；事实来源路径（`docs/*`、`v2/*`、`CLAUDE.md`）指向该后端仓。
+  - `_shared/skills/` 物理复制到 3 变体；README「Skill 一览」11→12（1 百科→2 百科）；三变体 plugin.json + marketplace.json 描述同步至「12 个 skill」
+
 ## v1.0.11
 
 - 配套 web_v2 v1.6.5:后端新增 `datasets_export_files_manifest` —— **专为 0 细标的原始音频数据集**做批量下载,跟 segment 驱动的 `datasets_export_manifest` 互补
