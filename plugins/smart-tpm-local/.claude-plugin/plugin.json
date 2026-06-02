@@ -1,7 +1,7 @@
 {
   "name": "smart-tpm-local",
-  "description": "Smart TPM 检测平台 MCP 插件 - 本地开发版（localhost:8000，对应本机 docker 起的 smart-tpm-api 容器）。13 个 skill 覆盖数据集/检测流程/测试任务/算法/生产检测记录 5 个模块的查询与受控写(含 AI 打粗标/细标)+ 音频质检后端架构百科 about-audio-quality + 联网录音系统 about-net-audio。",
-  "version": "1.0.13",
+  "description": "Smart TPM 检测平台 MCP 插件 - 本地开发版（localhost:8000，对应本机 docker 起的 smart-tpm-api 容器）。14 个 skill 覆盖数据集/检测流程/测试任务/算法/生产检测记录 5 个模块的查询与受控写(含 AI 打粗标/细标)+ 音频质检后端架构百科 about-audio-quality + 联网录音系统 about-net-audio + 多客户端数据同步系统百科 about-sync-data。",
+  "version": "1.0.14",
   "author": {
     "name": "bestfunc"
   },
