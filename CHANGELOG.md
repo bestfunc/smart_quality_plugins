@@ -1,5 +1,15 @@
 # CHANGELOG
 
+## v1.0.14
+
+本版同时入册**两个**新百科 skill (PR #2 + PR #3 同期合并),Skill 总数 13 → 15(3 百科 → 5 百科)。
+
+- 新增 `about-sync-data` —— **多客户端数据同步系统的产品百科**(user-invocable)。来自 PR #3 (refactor: 由原"独立 sync-data plugin"改注入 smart-tpm-{local,prod,test})。注:此次合入只在 3 变体目录,**_shared/skills/ 暂未同步**(后续补)。
+- 新增 `about-smartplc` —— **SmartPLC / BestPLC 产线声学质检系统的产品百科**(user-invocable,按 开发-新员工 / 销售-客户成功 / 现场实施-运维 / 速查 四类受众分流到 reference / scenarios / faq / glossary)。覆盖产品定位、分层架构、PLC 三协议(S7-1500 / Modbus TCP / 欧姆龙 FINS TCP)、检测主子流程 8 阶段状态机、对外集成(录音盒子 / 算法引擎 / SmartQuality / MinIO)、技术栈、部署配置、目标客户、版本交付、演进路线;竞品为参考稿(联网核实受限,逐条标待核)。
+  - 纯文档 skill,无 tool 调用,后端无变化;SmartPLC 是产线 PLC 中控 + 声学 AI 质检装备,与 `about-audio-quality`(算法后端)、`about-net-audio`(录音前端)同属生态产品百科,三者从不同层面拼出完整链路。
+  - 内容由 `smart_plc_v2`(BestPLC v3.5)仓经多智能体调研 + 逐篇抽查(欧姆龙协议名、客户名脱敏、弱措辞、死链)后写成;原仓 `BestPLC/` 代码与 `Docs/` 为事实来源。
+  - `_shared/skills/` 物理复制到 3 变体;README「Skill 一览」13→15(3 百科→5 百科);三变体 plugin.json + marketplace.json 描述同步至「15 个 skill」
+
 ## v1.0.13
 
 - 新增第 13 个 skill `about-net-audio` —— **net_audio 联网录音系统（嵌入式音频前端 + 算法直调）的产品百科**（user-invocable，按开发/现场运维/上游集成方/速查四类受众分流到 reference / scenarios / faq / glossary）。覆盖双进程架构（smartaudio 8090 + smartaudio-admin 8091）、A/B/C/D 物理通道与内部声道映射、BufferPool / RingBuffer / cacheFileStream 三套音频管道、灵敏度调校（yaml+restart 路径）、`stop_and_fetch` 算法直调接口、mDNS 唯一 host、Rock Pi S 出厂镜像 4 大克隆冲突、现场部署 / 滚动升级 / 故障排查。
