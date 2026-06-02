@@ -57,7 +57,7 @@ OAuth 2.1 + PKCE + DCR。**不需要复制粘贴 token**,浏览器一次同意�
 | 配置查询 | 3 | `station_channel_list`, `detect_station_stages_list`, `detect_versions_list` |
 | 杂项 | 2 | `audio_ai_req_logs_list`(算法引擎调用快照), `project_products_list` |
 
-## Skill 一览(13 个 = 3 百科 + 4 文档 + 6 任务)
+## Skill 一览(14 个 = 4 百科 + 4 文档 + 6 任务)
 
 | # | Skill | 类型 | 主要工具 |
 |---|---|---|---|
@@ -74,6 +74,7 @@ OAuth 2.1 + PKCE + DCR。**不需要复制粘贴 token**,浏览器一次同意�
 | 11 | **`mark-samples-with-ai`** ⚠️ | Task(写) | `marks_set_rough/batch_set_rough/add_detail/update_detail/delete_detail` — **要 `mcp:datasets:write`** |
 | 12 | `about-audio-quality` | 百科(user-invocable) | — (纯文档:音频质检后端 ai_api_server_v2 的架构/DAG引擎/算法模型/集群部署百科) |
 | 13 | `about-net-audio` | 百科(user-invocable) | — (纯文档:net_audio 联网录音系统的双进程架构/A-B-C-D 通道/灵敏度调校/上游算法对接/现场部署百科) |
+| 14 | `about-smartplc` | 百科(user-invocable) | — (纯文档:SmartPLC / BestPLC 产线声学质检系统百科 — 多协议 PLC 中控 + 录音盒子采音 + AI 判 OK/NG + 回写控流转;按开发/销售/现场实施/速查四类受众分流) |
 
 ## 写操作安全 / 审计
 
@@ -91,7 +92,7 @@ OAuth 2.1 + PKCE + DCR。**不需要复制粘贴 token**,浏览器一次同意�
 
 ## 当前版本
 
-`v1.0.13`(本次新增 `about-net-audio` 联网录音系统百科 skill,纯文档,后端 tool 无变化)
+`v1.0.14`(本次新增 `about-smartplc` SmartPLC 产线声学质检系统百科 skill,纯文档,后端 tool 无变化)
 
 ## License
 
