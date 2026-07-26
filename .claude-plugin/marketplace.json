@@ -11,17 +11,17 @@
     {
       "name": "smart-tpm-local",
       "source": "./plugins/smart-tpm-local",
-      "description": "【本地开发版】localhost:8000 — 本机 docker 起的 smart-tpm-api 容器。15 个 AI skill(含 AI 打标 + 音频质检后端百科 + net_audio 联网录音系统百科 + 多客户端数据同步系统百科 + SmartPLC 产线声学质检系统百科) + OAuth 自动授权 MCP connector。"
+      "description": "【本地开发版】localhost:8000 — 本机 docker 起的 smart-tpm-api 容器。16 个 AI skill(含 AI 打标 + 音频质检后端百科 + net_audio 联网录音系统百科 + 多客户端数据同步系统百科 + SmartPLC 产线声学质检系统百科 + SmartQuality 平台交接百科) + OAuth 自动授权 MCP connector。"
     },
     {
       "name": "smart-tpm-test",
       "source": "./plugins/smart-tpm-test",
-      "description": "【内网测试版】http://192.168.2.121:8080 — 部门内测环境。15 个 AI skill(含 AI 打标 + 音频质检后端百科 + net_audio 联网录音系统百科 + 多客户端数据同步系统百科 + SmartPLC 产线声学质检系统百科) + OAuth 自动授权 MCP connector。"
+      "description": "【内网测试版】http://192.168.2.121:8080 — 部门内测环境。16 个 AI skill(含 AI 打标 + 音频质检后端百科 + net_audio 联网录音系统百科 + 多客户端数据同步系统百科 + SmartPLC 产线声学质检系统百科 + SmartQuality 平台交接百科) + OAuth 自动授权 MCP connector。"
     },
     {
       "name": "smart-tpm-prod",
       "source": "./plugins/smart-tpm-prod",
-      "description": "【生产版】http://192.168.2.175:8080 — 部门生产环境(内网 IP 直连,避开自签证书问题)。15 个 AI skill(含 AI 打标 + 音频质检后端百科 + net_audio 联网录音系统百科 + 多客户端数据同步系统百科 + SmartPLC 产线声学质检系统百科) + OAuth 自动授权 MCP connector。"
+      "description": "【生产版】http://192.168.2.175:8080 — 部门生产环境(内网 IP 直连,避开自签证书问题)。16 个 AI skill(含 AI 打标 + 音频质检后端百科 + net_audio 联网录音系统百科 + 多客户端数据同步系统百科 + SmartPLC 产线声学质检系统百科 + SmartQuality 平台交接百科) + OAuth 自动授权 MCP connector。"
     }
   ]
 }

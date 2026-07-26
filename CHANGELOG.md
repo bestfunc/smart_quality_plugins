@@ -1,5 +1,14 @@
 # CHANGELOG
 
+## v1.0.15
+
+新增 `about-smart-quality` —— **SmartQuality 智能质量检测平台的产品全貌与离职交接百科**(user-invocable),Skill 总数 15 → 16(5 百科 → 6 百科)。
+
+- 顶层"伞形"产品百科,覆盖离职交接涉及的 6 个系统模块(微信服务平台 / 数据同步服务端 + 客户端 / 采集端 / Web 检测平台 / 移动套装),每篇 `systems/` 文档即一份开发交接正文(架构 / 技术栈 / 配置项 / 已知缺陷 / 从哪读起代码)。
+- 结构:`SKILL.md`(按受众导航) + reference×5(产品全貌 / 架构 / 核心概念 / 技术栈 / 生态) + systems×6 + scenarios×2 + faq×2(含交接对照表) + glossary,共 17 文件。
+- 纯文档 skill,无 tool 调用,后端无变化;与已有子百科 about-smart-tpm-mcp / about-audio-quality / about-net-audio / about-sync-data / about-smartplc 分工:本百科讲全貌 + 交接,子百科讲细分层。
+- `_shared/skills/` 物理复制到 3 变体,`diff -r` 零差异校验通过;三变体 plugin.json + marketplace.json 描述同步至「16 个 skill」,版本 1.0.14 → 1.0.15;README「Skill 一览」15→16(5 百科→6 百科)。
+
 ## v1.0.14
 
 本版同时入册**两个**新百科 skill (PR #2 + PR #3 同期合并),Skill 总数 13 → 15(3 百科 → 5 百科)。
